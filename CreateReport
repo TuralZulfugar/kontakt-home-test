@@ -1,0 +1,1139 @@
+package Helpers;
+
+
+import org.apache.commons.io.FileUtils;
+import org.json.simple.parser.ParseException;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+
+public class CreateReport {
+    public static void main(String[] args) throws IOException, ParseException {
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+        File myObj = null;
+        try {
+            File directory = new File("target/report");
+            if (! directory.exists()){
+                directory.mkdir();
+                // If you require it to make the entire directory path including parents,
+                // use directory.mkdirs(); here instead.
+            }
+            myObj = new File("target/report/" + dateFormat.format(date) + ".html");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+                new FileWriter(dateFormat.format(date) + ".html", false).close();
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        File myObj1 = new File("target/Cucumber.json");
+        Scanner myReader = new Scanner(myObj1);
+        String jsonString = myObj1.toString();
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(myObj, true)));
+        out.write("<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"utf-8\">\n" +
+                "    <meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\">\n" +
+                "\n" +
+                "    <title>Kapital Bank - QA - General Report</title>\n" +
+                "    <meta content=\"\" name=\"description\">\n" +
+                "    <meta content=\"\" name=\"keywords\">\n" +
+                "\n" +
+                "    <!-- Favicons -->\n" +
+                "    <link href=\"https://www.kapitalbank.az/favicon.ico\" rel=\"icon\">\n" +
+                "    <link href=\"https://regal-praline-1ac278.netlify.app/assets/img/apple-touch-icon.png\" rel=\"apple-touch-icon\">\n" +
+                "    <link href=\"https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Questrial:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i\" rel=\"stylesheet\">\n" +
+                "    <link rel=\"stylesheet\" href=\"https://regal-praline-1ac278.netlify.app/assets/dore/font/simple-line-icons/css/simple-line-icons.css\" />\n" +
+                "    <link href=\"https://regal-praline-1ac278.netlify.app/assets/vendor/aos/aos.css\" rel=\"stylesheet\">\n" +
+                "    <link href=\"https://regal-praline-1ac278.netlify.app/assets/vendor/bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\">\n" +
+                "    <link href=\"https://regal-praline-1ac278.netlify.app/assets/vendor/swiper/swiper-bundle.min.css\" rel=\"stylesheet\">\n" +
+                "    <link href=\"https://regal-praline-1ac278.netlify.app/assets/css/style.css\" rel=\"stylesheet\">\n" +
+                "    <link rel=\"stylesheet\" href=\"https://regal-praline-1ac278.netlify.app/assets/dore/css/vendor/perfect-scrollbar.css\" />\n" +
+                "\n" +
+                "\n" +
+                "    <style>\n" +
+                "        .dashboard-list-with-user,.dashboard-logs{height:320px!important}.dashboard-link-list,.dashboard-progress{height:427px!important}.navbar{background:0 0!important;height:120px;padding:1.5rem 0;box-shadow:none!important}.lc1,.lc2,.lc3,.lc4{width:13px!important;height:13px!important;display:inline-block!important}.lc1{border:2px solid #388609!important;border-radius:14px!important}.lc2{border:2px solid #9a162a!important;border-radius:14px!important}.lc3{border:2px solid #a5a91f!important;border-radius:14px!important}.lc4{border:2px solid #3f3f3f!important;border-radius:14px!important}.err{border:1px solid rgba(187,0,0,.667);color:rgba(187,0,0,.667)}.almx{font-size:40px!important;position:relative;top:10px;left:10px}.border button{color:#000!important;font-size:large!important}::-webkit-scrollbar{width:10px}::-webkit-scrollbar-track{box-shadow:inset 0 0 5px grey;border-radius:10px}::-webkit-scrollbar-thumb{background:#ad0f0f;border-radius:10px}::-webkit-scrollbar-thumb:hover{background:#750000}@media (min-width:576px){.min-width-zero p{font-size:30px!important}}@media (min-width:768px){.min-width-zero p{font-size:20px!important}}@media (min-width:992px){.min-width-zero p{font-size:20px!important}}body,p{font-family:Questrial,Times,serif!important}.min-width-zero p{font-weight:700;font-size:large!important;color:rgb(165 56 73);position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.progress-bar{background-color:#d01e2c!important}\n" +
+                "    </style>\n" +
+                "<style>\n" +
+                "    .pulse{cursor:pointer;box-shadow:0 0 0 #cc2c2c;animation:2s infinite pulse;z-index:2;border:1px solid #ff4500!important}.pulse:hover{animation:none}@-webkit-keyframes pulse{0%{-webkit-box-shadow:0 0 0 0 #cc2c2c}70%{-webkit-box-shadow:0 0 0 10px rgba(204,169,44,0)}100%{-webkit-box-shadow:0 0 0 0 rgba(204,169,44,0)}}@keyframes pulse{0%{-moz-box-shadow:0 0 0 0 #cc2c2c;box-shadow:0 0 0 0 #ce0606}70%{-moz-box-shadow:0 0 0 5px rgba(204,169,44,0);box-shadow:0 0 0 10px rgba(204,169,44,0)}100%{-moz-box-shadow:0 0 0 0 rgba(204,169,44,0);box-shadow:0 0 0 0 rgba(204,169,44,0)}}.navbar{height:auto!important}\n" +
+                "</style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<i class=\"bi bi-list mobile-nav-toggle d-lg-none\"></i>\n" +
+                "<header id=\"header\" class=\"d-flex flex-column justify-content-center\">\n" +
+                "    <nav id=\"navbar\" class=\"navbar nav-menu\">\n" +
+                "        <ul id=\"firstpage\">\n" +
+                "            <li><a href=\"#her\"  class=\"nav-link scrollto active\">\n" +
+                "                <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\"\n" +
+                "                     viewBox=\"0 0 479 453.3\" style=\"enable-background:new 0 0 479 453.3;\" xml:space=\"preserve\">\n" +
+                "<style type=\"text/css\">\n" +
+                "\t.st0{fill:#6A062B;}\n" +
+                "    .st1{fill:url(#SVGID_1_);}\n" +
+                "    .st2{fill:#A2082D;}\n" +
+                "</style>\n" +
+                "   <g id=\"right\">\n" +
+                "\t<polygon class=\"st0\" points=\"226.3,229.2 0,453.3 454.6,453.3 \t\"/>\n" +
+                "</g>\n" +
+                "                    <g id=\"up\">\n" +
+                "\t<linearGradient id=\"SVGID_1_\" gradientUnits=\"userSpaceOnUse\" x1=\"112.7226\" y1=\"115.8525\" x2=\"340.9126\" y2=\"-112.3375\">\n" +
+                "\t\t<stop  offset=\"4.748603e-02\" style=\"stop-color:#780028\"/>\n" +
+                "        <stop  offset=\"0.1281\" style=\"stop-color:#8F0829\"/>\n" +
+                "        <stop  offset=\"0.2414\" style=\"stop-color:#A9112A\"/>\n" +
+                "        <stop  offset=\"0.3676\" style=\"stop-color:#BC182A\"/>\n" +
+                "        <stop  offset=\"0.5117\" style=\"stop-color:#CA1C2B\"/>\n" +
+                "        <stop  offset=\"0.6894\" style=\"stop-color:#D31F2B\"/>\n" +
+                "        <stop  offset=\"1\" style=\"stop-color:#D5202B\"/>\n" +
+                "        <stop  offset=\"1\" style=\"stop-color:#606060\"/>\n" +
+                "\t</linearGradient>\n" +
+                "                        <polygon class=\"st1\" points=\"226.3,229.5 454.6,1.3 0,1.3 \t\"/>\n" +
+                "</g>\n" +
+                "                    <g id=\"left\">\n" +
+                "\t<polygon class=\"st2\" points=\"1,0 1,452.3 227.3,228.2 \t\"/>\n" +
+                "</g>\n" +
+                "</svg>\n" +
+                "                <span>Home</span></a></li>\n" +
+                "\n" +
+                "\n" +
+                "        </ul>\n" +
+                "    </nav>\n" +
+                "\n" +
+                "</header>\n" +
+                "<h2 class=\"text-center mt-5\">Kapital Bank - QA - General Report</h2>\n" +
+                "<!-- ======= Hero Section ======= -->\n" +
+                "<section id=\"her\" class=\"d-flex flex-column justify-content-center\">\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-4\">\n" +
+                "                <div class=\"card d-flex flex-row mb-4\">\n" +
+                "                    <a class=\"d-flex\">\n" +
+                "                        <span class=\"simple-icon-clock img-thumbnail border-0 rounded-circle m-4 list-thumbnail align-self-center small almx\"></span>\n" +
+                "                    </a>\n" +
+                "                    <div class=\" d-flex flex-grow-1 min-width-zero\">\n" +
+                "                        <div class=\"card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero\">\n" +
+                "                            <div class=\"tduration min-width-zero\">\n" +
+                "                                <a>\n" +
+                "                                    <p class=\"list-item-heading mb-1 truncate\"><span></span></p>\n" +
+                "                                </a>\n" +
+                "\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-md-4\">\n" +
+                "                <div class=\"card d-flex flex-row mb-4\">\n" +
+                "                    <a class=\"d-flex\">\n" +
+                "                        <span class=\"glyph-icon simple-icon-check img-thumbnail border-0 rounded-circle m-4 list-thumbnail align-self-center small almx\"></span>\n" +
+                "                    </a>\n" +
+                "                    <div class=\" d-flex flex-grow-1 min-width-zero\">\n" +
+                "                        <div class=\"card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero\">\n" +
+                "                            <div class=\"tpercent min-width-zero\">\n" +
+                "                                <a>\n" +
+                "                                    <p class=\"list-item-heading mb-1 truncate\"></p>\n" +
+                "                                </a>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-md-4\">\n" +
+                "                <div class=\"card d-flex flex-row mb-4\">\n" +
+                "                    <a class=\"d-flex\">\n" +
+                "                        <span class=\"glyph-icon simple-icon-event img-thumbnail border-0 rounded-circle m-4 list-thumbnail align-self-center small almx\"></span>\n" +
+                "                    </a>\n" +
+                "                    <div class=\" d-flex flex-grow-1 min-width-zero\">\n" +
+                "                        <div class=\"card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero\">\n" +
+                "                            <div class=\"tdate min-width-zero\">\n" +
+                "                                <a>\n" +
+                "                                    <p class=\"list-item-heading mb-1 truncate\"></p>\n" +
+                "                                </a>\n" +
+                "\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-12 col-lg-4 mb-4\">\n" +
+                "                <div class=\"card h-100\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Total Steps</h5>\n" +
+                "                        <div class=\"dashboard-donut-chart\">\n" +
+                "                            <canvas id=\"polarChart\"></canvas>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-md-6 col-lg-5 mb-4\">\n" +
+                "                <div class=\"card\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Logs</h5>\n" +
+                "                        <div class=\"chart-container\">\n" +
+                "                            <canvas id=\"salesChart1\"></canvas>\n" +
+                "                        </div>\n" +
+                "<!--                        <div class=\"scroll dashboard-logs\">-->\n" +
+                "\n" +
+                "<!--                            <table class=\"table table-sm table-borderless\">-->\n" +
+                "\n" +
+                "<!--                                <tbody id=\"glogs\">-->\n" +
+                "\n" +
+                "<!--                                </tbody>-->\n" +
+                "<!--                            </table>-->\n" +
+                "<!--                        </div>-->\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-lg-3 col-sm-12 mb-4\">\n" +
+                "                <div class=\"card dashboard-progress\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Status</h5>\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Total Features\n" +
+                "                                <span data-mtotalf class=\"mtotalf float-right text-muted\"></span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-mtotalfprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" ></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Scenarios\n" +
+                "                                <span data-mtotalsc class=\"float-right text-muted\"></span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-mtotalscprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Steps\n" +
+                "                                <span data-mtotals class=\"float-right text-muted\"></span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-mtotalsprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" ></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Failed\n" +
+                "                                <span data-mtotalfail class=\"float-right text-muted\"></span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-mtotalfailprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Passed\n" +
+                "                                <span data-mtotalp class=\"float-right text-muted\">1/2</span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-mtotalpprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" ></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-12\">\n" +
+                "                <div class=\"card mb-4\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"mb-4\">General Scenarios</h5>\n" +
+                "\n" +
+                "                        <div id=\"gaccordion\">\n" +
+                "\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</section>\n" +
+                "\n" +
+                "<main id=\"main\"></main>\n" +
+                "\n" +
+                "<div id=\"preloader\">\n" +
+                "    <object type=\"image/svg+xml\" data=\"https://regal-praline-1ac278.netlify.app/assets/kp.svg\" class=\"imgmy\"></object>\n" +
+                "    <img src=\"https://regal-praline-1ac278.netlify.app/assets/kp.svg\" class=\"img imgmy\" alt=\"\">\n" +
+                "</div>\n" +
+                "<a href=\"#\" class=\"back-to-top d-flex align-items-center justify-content-center\"><i class=\"bi bi-arrow-up-short\"></i></a>\n");
+
+        out.write("<script src=\"https://regal-praline-1ac278.netlify.app/assets/vendor/aos/aos.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/vendor/swiper/swiper-bundle.min.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/js/main.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/vendor/jquery-3.3.1.min.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/vendor/bootstrap.bundle.min.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/vendor/perfect-scrollbar.min.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/vendor/mousetrap.min.js\" style=\"opacity: 1;\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/scripts.js\"></script>\n" +
+                "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js\"  crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/ch.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/dore.script.js\"></script>\n" +
+                "<script src=\"https://regal-praline-1ac278.netlify.app/assets/dore/js/cdata.js\"></script>");
+        out.write("<script>");
+        out.write("const test =");
+
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            System.out.println(data);
+
+            out.write(data);
+
+        }
+
+        out.write(";");
+        out.write("</script>");
+        out.write("<script>\n" +
+                "\n" +
+                "    const squadmod = true;\n" +
+                "    let keys = [];\n" +
+                "    test.map((value, key) => {\n" +
+                "        const uri = value['uri'];\n" +
+                "        const value1 = uri.split('/')[4]\n" +
+                "        const value2 = uri.split('/')[5];\n" +
+                "        if (!keys[value1])\n" +
+                "        {\n" +
+                "            keys[value1] = [];\n" +
+                "        }\n" +
+                "        if (keys[value1])\n" +
+                "        {\n" +
+                "            let arr2 = test[key];\n" +
+                "            delete arr2['uri']\n" +
+                "            if (!value2.toString().includes('.')) {\n" +
+                "                if (!keys[value1][value2]){\n" +
+                "                    keys[value1][value2] = [];\n" +
+                "                }\n" +
+                "                keys[value1][value2].push(arr2);\n" +
+                "            }\n" +
+                "            else\n" +
+                "            {\n" +
+                "                keys[value1].push(arr2)\n" +
+                "            }\n" +
+                "        }\n" +
+                "    });\n" +
+                "\n" +
+                "    let status = [];\n" +
+                "    let passedStatusCount = 0;\n" +
+                "    let failedStatusCount = 0;\n" +
+                "    let skippedStatusCount = 0;\n" +
+                "    let totalStatusCount = 0;\n" +
+                "    let infoStatusCount = 0;\n" +
+                "    let stepstotal = 0;\n" +
+                "    let passedtotal = 0;\n" +
+                "    let failtotal = 0;\n" +
+                "    let skiptotal = 0;\n" +
+                "    let accId = 0;\n" +
+                "    let totalscenarios = 0;\n" +
+                "    let totaldr = 0;\n" +
+                "    let products = [];\n" +
+                "    let psteparray = [];\n" +
+                "\n" +
+                "\n" +
+                "    function checkStatusState(a){\n" +
+                "        totalStatusCount++\n" +
+                "        stepstotal++\n" +
+                "        if(a == \"passed\"){\n" +
+                "            passedStatusCount++\n" +
+                "            passedtotal++\n" +
+                "        }else if(a == \"failed\"){\n" +
+                "            failedStatusCount++\n" +
+                "            failtotal++\n" +
+                "        }else if(a == \"skipped\"){\n" +
+                "            skippedStatusCount++\n" +
+                "            skiptotal++\n" +
+                "        }else if(a == \"info\"){\n" +
+                "            infoStatusCount++\n" +
+                "        }\n" +
+                "\n" +
+                "    }\n" +
+                "\n" +
+                "    Object.keys(keys).map((value, key) => {\n" +
+                "\n" +
+                "        let tribe = value;\n" +
+                "        products.push(tribe);\n" +
+                "        var newli = document.createElement('li');\n" +
+                "        newli.innerHTML = \"<a href='#\"+tribe+\"' class=\\\"nav-link scrollto\\\">\\n\" +\n" +
+                "            \"                \"+ configs(tribe) +\"\\n\" +\n" +
+                "            \"                <span>\"+capitalizeFirstLetter(tribe)+\"</span></a>\"\n" +
+                "        var panel = document.getElementById(\"firstpage\");\n" +
+                "        insertAfter(newli,  panel.lastElementChild);\n" +
+                "        var section = document.getElementById(\"main\");\n" +
+                "        section.innerHTML += createSection(tribe);\n" +
+                "        let executed = 0;\n" +
+                "        let durationTotal = 0;\n" +
+                "        let featureproduct = 0;\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "////////////////////////Sections////////////////////////////////\n" +
+                "        Object.keys(keys[value]).map((val, key) =>{\n" +
+                "\n" +
+                "           if(Array.isArray(keys[value][val])){\n" +
+                "\n" +
+                "               keys[value][val].map((v1, k) =>{\n" +
+                "                   executed += v1.elements.length;\n" +
+                "                   featureproduct++\n" +
+                "\n" +
+                "                   v1.elements.map((v,k) => {\n" +
+                "\n" +
+                "                       accId++\n" +
+                "                       totalscenarios++\n" +
+                "                       document.querySelector(`#${value} .accordion`).innerHTML += accItem(v, v1.keyword, v1.name, value)\n" +
+                "                       document.querySelector(`#gaccordion`).innerHTML += gaccItem(v, v1.keyword, v1.name,value)\n" +
+                "                       document.querySelector(`#log-${value}`).innerHTML += logs(v, value)\n" +
+                "                       //document.querySelector(`#glogs`).innerHTML += glogs(v, value)\n" +
+                "                       v.steps.map((v,k) => {\n" +
+                "                           if(v.result.error_message){\n" +
+                "                               document.querySelector(`#border-${accId}`).classList.add(\"pulse\");\n" +
+                "                               document.querySelector(`#borde-${accId}`).classList.add(\"pulse\");\n" +
+                "                           }\n" +
+                "                           status.push(v.result.status);\n" +
+                "                           checkStatusState(v.result.status);\n" +
+                "                           if(v.result.duration){\n" +
+                "                               durationTotal +=convertDurationToSeconds(v.result.duration);\n" +
+                "                               totaldr += v.result.duration;\n" +
+                "                           }\n" +
+                "                       })\n" +
+                "                   })\n" +
+                "               })\n" +
+                "           }\n" +
+                "           else\n" +
+                "               {\n" +
+                "                   featureproduct++\n" +
+                "\n" +
+                "                   executed += keys[value][val].elements.length;\n" +
+                "\n" +
+                "                   keys[value][val].elements.map((v,k) => {\n" +
+                "\n" +
+                "                       accId++\n" +
+                "                       totalscenarios++\n" +
+                "                       document.querySelector(`#${value} .accordion`).innerHTML += accItem(v,keys[value][val].keyword, keys[value][val].name, value)\n" +
+                "                       document.querySelector(`#gaccordion`).innerHTML += gaccItem(v, keys[value][val].keyword, keys[value][val].name,value)\n" +
+                "                       document.querySelector(`#log-${value}`).innerHTML += logs(v, value);\n" +
+                "                       //document.querySelector(`#glogs`).innerHTML += glogs(v, value);\n" +
+                "                       v.steps.map((v,k) => {\n" +
+                "                          if(v.result.error_message){\n" +
+                "                            document.querySelector(`#border-${accId}`).classList.add(\"pulse\");\n" +
+                "                            document.querySelector(`#borde-${accId}`).classList.add(\"pulse\");\n" +
+                "                          }\n" +
+                "                           status.push(v.result.status);\n" +
+                "                       checkStatusState(v.result.status);\n" +
+                "                       if(v.result.duration){\n" +
+                "                           durationTotal +=convertDurationToSeconds(v.result.duration);\n" +
+                "                           totaldr += v.result.duration;\n" +
+                "                       }\n" +
+                "                   })\n" +
+                "               })\n" +
+                "\n" +
+                "           }\n" +
+                "        })\n" +
+                "        let passedPercent = (passedStatusCount *100) / totalStatusCount ;\n" +
+                "\n" +
+                "\n" +
+                "        failedBlock = document.querySelector(`#${value} [data-failprogress]`);\n" +
+                "        failedBlock.setAttribute(\"aria-valuenow\", (100 - passedPercent))\n" +
+                "        failedCountBlock = document.querySelector(`#${value} [data-failcount]`);\n" +
+                "\n" +
+                "        passedBlock = document.querySelector(`#${value} [data-passedprogress]`);\n" +
+                "        passedBlock.setAttribute(\"aria-valuenow\", passedPercent)\n" +
+                "        passedcountBlock = document.querySelector(`#${value} [data-passedcount]`);\n" +
+                "\n" +
+                "        stepsCountBlock = document.querySelector(`#${value} [data-scenarious]`).innerHTML = \"Scenarios   \" + executed ;\n" +
+                "\n" +
+                "        PercentBlock = document.querySelector(`#${value} .tpercentx p`).innerHTML = `<b>Success rate: ${passedPercent.toFixed(2)} % Passed</b>`;\n" +
+                "        TotalFeatureBlock = document.querySelector(`#${value} [data-totalfeature]`).innerHTML = `${featureproduct}`;\n" +
+                "\n" +
+                "        stepsxCountBlock = document.querySelector(`#${value} [data-stepcount]`).innerHTML = \"   \" + totalStatusCount ;\n" +
+                "\n" +
+                "\n" +
+                "        document.querySelector(`#${value} .tdurationx p`).innerHTML = `<b>Duration: ${secondsToHms(durationTotal)}</b>`;\n" +
+                "\n" +
+                "        failedCountBlock.innerHTML = `${failedStatusCount} / ${totalStatusCount}`;\n" +
+                "        passedcountBlock.innerHTML = `${passedStatusCount} / ${totalStatusCount}`;\n" +
+                "        psteparray.push(passedStatusCount);\n" +
+                "        createChart(passedStatusCount, failedStatusCount, skippedStatusCount)\n" +
+                "\n" +
+                "        passedStatusCount = 0;\n" +
+                "        failedStatusCount = 0;\n" +
+                "        skippedStatusCount = 0;\n" +
+                "        totalStatusCount = 0;\n" +
+                "        infoStatusCount = 0;\n" +
+                "\n" +
+                "\n" +
+                "        let totalpassedPercent = (passedtotal *100) / stepstotal ;\n" +
+                "\n" +
+                "        TotalFeatureBlock1 = document.querySelector(`[data-mtotalf]`).innerHTML = ` ${test.length}`;\n" +
+                "        TotalScenarioBlock1 = document.querySelector(`[data-mtotalsc]`).innerHTML = ` ${totalscenarios}`;\n" +
+                "        TotalStepsBlock1 = document.querySelector(`[data-mtotals]`).innerHTML = ` ${stepstotal}`;\n" +
+                "        TotalFailsBlock1 = document.querySelector(`[data-mtotalfail]`).innerHTML = ` ${failtotal}`;\n" +
+                "        TotalPassedBlock1 = document.querySelector(`[data-mtotalp]`).innerHTML = ` ${passedtotal}`;\n" +
+                "\n" +
+                "        TotalFailsBlockProgress = document.querySelector(`[data-mtotalfailprogress]`);\n" +
+                "        TotalFailsBlockProgress.setAttribute(\"aria-valuenow\", (100 - totalpassedPercent))\n" +
+                "        TotalPassedBlockProgress = document.querySelector(`[data-mtotalpprogress]`);\n" +
+                "        TotalPassedBlockProgress.setAttribute(\"aria-valuenow\", (totalpassedPercent))\n" +
+                "\n" +
+                "\n" +
+                "    });\n" +
+                "    Array.prototype.max = function() {\n" +
+                "        return Math.max.apply(null, this);\n" +
+                "    };\n" +
+                "\n" +
+                "    Array.prototype.min = function() {\n" +
+                "        return Math.min.apply(null, this);\n" +
+                "    };\n" +
+                "\n" +
+                "    let max = psteparray.max();\n" +
+                "    let min = psteparray.min();\n" +
+                "\n" +
+                "    linechartCreate(products, max, min, psteparray)\n" +
+                "    totalChart(passedtotal, failtotal,skiptotal)\n" +
+                "    function totalChart(x,y,z){\n" +
+                "            var polarChart = document.getElementById(\"polarChart\").getContext(\"2d\");\n" +
+                "\n" +
+                "        Chart.defaults.PolarWithShadow = Chart.defaults.polarArea;\n" +
+                "        Chart.controllers.PolarWithShadow = Chart.controllers.polarArea.extend({\n" +
+                "            draw: function(ease) {\n" +
+                "                Chart.controllers.polarArea.prototype.draw.call(this, ease);\n" +
+                "                let ctx = this.chart.chart.ctx;\n" +
+                "                ctx.save();\n" +
+                "                ctx.shadowColor = \"rgba(0,0,0,0.2)\";\n" +
+                "                ctx.shadowBlur = 10;\n" +
+                "                ctx.shadowOffsetX = 5;\n" +
+                "                ctx.shadowOffsetY = 10;\n" +
+                "                ctx.responsive = true;\n" +
+                "                Chart.controllers.polarArea.prototype.draw.apply(this, arguments);\n" +
+                "                ctx.restore();\n" +
+                "            }\n" +
+                "        });\n" +
+                "        var chartTooltip = {\n" +
+                "            backgroundColor: \"#232223\",\n" +
+                "            titleFontColor: \"#969696\",\n" +
+                "            borderColor: \"#424242\",\n" +
+                "            borderWidth: 0.5,\n" +
+                "            bodyFontColor: \"#969696\",\n" +
+                "            bodySpacing: 10,\n" +
+                "            xPadding: 15,\n" +
+                "            yPadding: 15,\n" +
+                "            cornerRadius: 0.15,\n" +
+                "            displayColors: false\n" +
+                "        };\n" +
+                "\n" +
+                "            var myChart = new Chart(polarChart, {\n" +
+                "\n" +
+                "                type: \"PolarWithShadow\",\n" +
+                "                options: {\n" +
+                "                    plugins: {\n" +
+                "                        datalabels: {\n" +
+                "                            display: false\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    responsive: true,\n" +
+                "                    maintainAspectRatio: false,\n" +
+                "                    scale: {\n" +
+                "                        ticks: {\n" +
+                "                            display: false\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    legend: {\n" +
+                "                        position: \"bottom\",\n" +
+                "                        labels: {\n" +
+                "                            padding: 30,\n" +
+                "                            usePointStyle: true,\n" +
+                "                            fontSize: 12\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    tooltips: chartTooltip\n" +
+                "                },\n" +
+                "                data: {\n" +
+                "                    datasets: [\n" +
+                "                        {\n" +
+                "                            label: \"Stock\",\n" +
+                "                            borderWidth: 2,\n" +
+                "                            pointBackgroundColor: \"#a53949\",\n" +
+                "                            borderColor: [\"rgb(56 133 9)\", \"#aa5e6c\", \"rgb(255 252 0)\"],\n" +
+                "                            backgroundColor: [\n" +
+                "                                \"#38850961\",\n" +
+                "                                \"#ff001063\",\n" +
+                "                                \"#fffc0069\"\n" +
+                "\n" +
+                "                            ],\n" +
+                "                            data: [x, y, z]\n" +
+                "                        }\n" +
+                "                    ],\n" +
+                "                    labels: [ \"Passed\",\"Failed\", \"Skipped\"]\n" +
+                "                }\n" +
+                "            });\n" +
+                "\n" +
+                "\n" +
+                "    }\n" +
+                "    function createSection(id){\n" +
+                "        return `<section id=\"${id}\" class=\"d-flex flex-column justify-content-center char-item\">\n" +
+                "    <div class=\"container\" data-aos=\"zoom-in\" data-aos-delay=\"100\">\n" +
+                "        <div id=\"test\"></div>\n" +
+                "        <div class=\"container\">\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-6\">\n" +
+                "                <div class=\"card d-flex flex-row mb-4\">\n" +
+                "                    <a class=\"d-flex\">\n" +
+                "                        <span class=\"simple-icon-clock img-thumbnail border-0 rounded-circle m-4 list-thumbnail align-self-center small almx\"></span>\n" +
+                "                    </a>\n" +
+                "                    <div class=\" d-flex flex-grow-1 min-width-zero\">\n" +
+                "                        <div class=\"card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero\">\n" +
+                "                            <div class=\"tdurationx min-width-zero\">\n" +
+                "                                <a>\n" +
+                "                                    <p class=\"list-item-heading mb-1 truncate\"><span></span></p>\n" +
+                "                                </a>\n" +
+                "\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-md-6\">\n" +
+                "                <div class=\"card d-flex flex-row mb-4\">\n" +
+                "                    <a class=\"d-flex\">\n" +
+                "                        <span class=\"glyph-icon simple-icon-check img-thumbnail border-0 rounded-circle m-4 list-thumbnail align-self-center small almx\"></span>\n" +
+                "                    </a>\n" +
+                "                    <div class=\" d-flex flex-grow-1 min-width-zero\">\n" +
+                "                        <div class=\"card-body pl-0 align-self-center d-flex flex-column flex-lg-row justify-content-between min-width-zero\">\n" +
+                "                            <div class=\"tpercentx min-width-zero\">\n" +
+                "                                <a>\n" +
+                "                                    <p class=\"list-item-heading mb-1 truncate\"></p>\n" +
+                "                                </a>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-12 col-lg-4 mb-4\">\n" +
+                "                <div class=\"card h-100\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Total Features</h5>\n" +
+                "                        <div class=\"dashboard-donut-chart\">\n" +
+                "                            <canvas id=\"categoryChart-${id}\"></canvas>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-md-6 col-lg-4 mb-4\">\n" +
+                "                <div class=\"card\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Logs</h5>\n" +
+                "                        <div class=\"scroll dashboard-logs\">\n" +
+                "\n" +
+                "                            <table class=\"table table-sm table-borderless\">\n" +
+                "\n" +
+                "                                <tbody id=\"log-${id}\">\n" +
+                "                                </tbody>\n" +
+                "                            </table>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div class=\"col-lg-4 col-sm-12 mb-4\">\n" +
+                "                <div class=\"card dashboard-progress\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"card-title\">Status</h5>\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p class=\"mb-2\">Total Features\n" +
+                "                                <span data-totalfeature class=\"float-right text-muted\"></span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p data-scenarious class=\"mb-2\">Scenarios\n" +
+                "                                <span data-scount class=\"float-right text-muted\">1/8</span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-sprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p data-steps class=\"mb-2\">Stepst\n" +
+                "                                <span data-stepcount class=\"float-right text-muted\">2/6</span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-stepprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 100%;\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p data-fail class=\"mb-2\">Failed\n" +
+                "                                <span data-failcount class=\"float-right text-muted\">0/8</span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-failprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                        <div class=\"mb-4\">\n" +
+                "                            <p data-passed class=\"mb-2\">Passed\n" +
+                "                                <span data-passedcount class=\"float-right text-muted\">1/2</span>\n" +
+                "                            </p>\n" +
+                "                            <div class=\"progress\">\n" +
+                "                                <div data-passedprogress class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" ></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "        <div class=\"row\">\n" +
+                "            <div class=\"col-md-12\">\n" +
+                "                <div class=\"card mb-4\">\n" +
+                "                    <div class=\"card-body\">\n" +
+                "                        <h5 class=\"mb-4\">${capitalizeFirstLetter(id)}</h5>\n" +
+                "                        <div  class=\"accordion\" id=\"accordionExample-${id}\"></div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "    </div>\n" +
+                "\n" +
+                "</section>`\n" +
+                "    }\n" +
+                "    function createChart(x,y,z){\n" +
+                "        const arr = document.querySelectorAll('.char-item');\n" +
+                "        Object.values(arr).map((value) => {\n" +
+                "\n" +
+                "            Chart.defaults.DoughnutWithShadow= Chart.defaults.doughnut;\n" +
+                "            Chart.controllers.DoughnutWithShadow = Chart.controllers.doughnut.extend({\n" +
+                "                draw: function(ease) {\n" +
+                "                    Chart.controllers.doughnut.prototype.draw.call(this, ease);\n" +
+                "                    let ctx = this.chart.chart.ctx;\n" +
+                "                    ctx.save();\n" +
+                "                    ctx.shadowColor = \"rgba(0,0,0,0.15)\";\n" +
+                "                    ctx.shadowBlur = 10;\n" +
+                "                    ctx.shadowOffsetX = 0;\n" +
+                "                    ctx.shadowOffsetY = 10;\n" +
+                "                    ctx.responsive = true;\n" +
+                "                    Chart.controllers.doughnut.prototype.draw.apply(this, arguments);\n" +
+                "                    ctx.restore();\n" +
+                "                }\n" +
+                "            });\n" +
+                "\n" +
+                "            var centerTextPlugin = {\n" +
+                "                afterDatasetsUpdate: function(chart) {},\n" +
+                "                beforeDraw: function(chart) {\n" +
+                "                    var width = chart.chartArea.right;\n" +
+                "                    var height = chart.chartArea.bottom;\n" +
+                "                    var ctx = chart.chart.ctx;\n" +
+                "                    ctx.restore();\n" +
+                "\n" +
+                "                    var activeLabel = chart.data.labels[0];\n" +
+                "                    var activeValue = chart.data.datasets[0].data[0];\n" +
+                "                    var dataset = chart.data.datasets[0];\n" +
+                "                    var meta = dataset._meta[Object.keys(dataset._meta)[0]];\n" +
+                "                    var total = meta.total;\n" +
+                "\n" +
+                "                    var activePercentage = parseFloat(\n" +
+                "                        ((activeValue / total) * 100).toFixed(1)\n" +
+                "                    );\n" +
+                "                    activePercentage = chart.legend.legendItems[0].hidden\n" +
+                "                        ? 0\n" +
+                "                        : activePercentage;\n" +
+                "\n" +
+                "                    if (chart.pointAvailable) {\n" +
+                "                        activeLabel = chart.data.labels[chart.pointIndex];\n" +
+                "                        activeValue =\n" +
+                "                            chart.data.datasets[chart.pointDataIndex].data[chart.pointIndex];\n" +
+                "\n" +
+                "                        dataset = chart.data.datasets[chart.pointDataIndex];\n" +
+                "                        meta = dataset._meta[Object.keys(dataset._meta)[0]];\n" +
+                "                        total = meta.total;\n" +
+                "                        activePercentage = parseFloat(\n" +
+                "                            ((activeValue / total) * 100).toFixed(1)\n" +
+                "                        );\n" +
+                "                        activePercentage = chart.legend.legendItems[chart.pointIndex].hidden\n" +
+                "                            ? 0\n" +
+                "                            : activePercentage;\n" +
+                "                    }\n" +
+                "\n" +
+                "                    ctx.font = \"36px\" + \" Questrial, sans-serif\";\n" +
+                "                    ctx.fillStyle = \"#969696\";\n" +
+                "                    ctx.textBaseline = \"middle\";\n" +
+                "\n" +
+                "                    var text = activePercentage + \"%\",\n" +
+                "                        textX = Math.round((width - ctx.measureText(text).width) / 2),\n" +
+                "                        textY = height / 2;\n" +
+                "                    ctx.fillText(text, textX, textY);\n" +
+                "\n" +
+                "                    ctx.font = \"14px\" + \" Questrial, sans-serif\";\n" +
+                "                    ctx.textBaseline = \"middle\";\n" +
+                "\n" +
+                "                    var text2 = activeLabel,\n" +
+                "                        textX = Math.round((width - ctx.measureText(text2).width) / 2),\n" +
+                "                        textY = height / 2 - 30;\n" +
+                "                    ctx.fillText(text2, textX, textY);\n" +
+                "\n" +
+                "                    ctx.save();\n" +
+                "                },\n" +
+                "                beforeEvent: function(chart, event, options) {\n" +
+                "                    var firstPoint = chart.getElementAtEvent(event)[0];\n" +
+                "\n" +
+                "                    if (firstPoint) {\n" +
+                "                        chart.pointIndex = firstPoint._index;\n" +
+                "                        chart.pointDataIndex = firstPoint._datasetIndex;\n" +
+                "                        chart.pointAvailable = true;\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            };\n" +
+                "            var chartTooltip = {\n" +
+                "                backgroundColor: \"#232223\",\n" +
+                "                titleFontColor: \"#969696\",\n" +
+                "                borderColor: \"#424242\",\n" +
+                "                borderWidth: 0.5,\n" +
+                "                bodyFontColor: \"#969696\",\n" +
+                "                bodySpacing: 10,\n" +
+                "                xPadding: 15,\n" +
+                "                yPadding: 15,\n" +
+                "                cornerRadius: 0.15,\n" +
+                "                displayColors: false\n" +
+                "            };\n" +
+                "            new Chart(`categoryChart-${value.id}`, {\n" +
+                "                plugins: [centerTextPlugin],\n" +
+                "                type: \"DoughnutWithShadow\",\n" +
+                "                data: {\n" +
+                "                    labels: [\"Passed\", \"Fails\", \"Skipped\"],\n" +
+                "                    datasets: [\n" +
+                "                        {\n" +
+                "                            label: \"\",\n" +
+                "                            borderColor: [\"rgb(56 133 9)\", \"#aa5e6c\", \"rgb(255 252 0)\"],\n" +
+                "                            backgroundColor: [\n" +
+                "                                \"#38850961\",\n" +
+                "                                \"#ff001063\",\n" +
+                "                                \"#fffc0069\"\n" +
+                "\n" +
+                "                            ],\n" +
+                "                            borderWidth: 2,\n" +
+                "                            data: [x, y, z]\n" +
+                "                        }\n" +
+                "                    ]\n" +
+                "                },\n" +
+                "                draw: function() {},\n" +
+                "                options: {\n" +
+                "                    plugins: {\n" +
+                "                        datalabels: {\n" +
+                "                            display: false\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    responsive: true,\n" +
+                "                    maintainAspectRatio: false,\n" +
+                "                    cutoutPercentage: 80,\n" +
+                "                    title: {\n" +
+                "                        display: false\n" +
+                "                    },\n" +
+                "                    layout: {\n" +
+                "                        padding: {\n" +
+                "                            bottom: 20\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    legend: {\n" +
+                "                        position: \"bottom\",\n" +
+                "                        labels: {\n" +
+                "                            padding: 30,\n" +
+                "                            usePointStyle: true,\n" +
+                "                            fontSize: 12\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    tooltips: chartTooltip\n" +
+                "                }\n" +
+                "            });\n" +
+                "        })\n" +
+                "\n" +
+                "    }\n" +
+                "    function insertAfter(newNode, existingNode) {\n" +
+                "        existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);\n" +
+                "    }\n" +
+                "    function capitalizeFirstLetter(string) {\n" +
+                "        return string.charAt(0).toUpperCase() + string.slice(1);\n" +
+                "    }\n" +
+                "    function convertDurationToSeconds(a){\n" +
+                "        return parseFloat((a / 1000000000).toFixed(1))\n" +
+                "    }\n" +
+                "    function secondsToHms(d) {\n" +
+                "        d = Number(d);\n" +
+                "        var h = Math.floor(d / 3600);\n" +
+                "        var m = Math.floor(d % 3600 / 60);\n" +
+                "        var s = Math.floor(d % 3600 % 60);\n" +
+                "        var hDisplay = h > 0 ? h + (h == 1 ? \" hour, \" : \" hours, \") : \"\";\n" +
+                "        var mDisplay = m > 0 ? m + (m == 1 ? \" minute, \" : \" minutes, \") : \"\";\n" +
+                "        var sDisplay = s > 0 ? s + (s == 1 ? \" second\" : \" seconds\") : \"\";\n" +
+                "        return hDisplay + mDisplay + sDisplay;\n" +
+                "    }\n" +
+                "    function gaccItem(item, k, n, parentID){\n" +
+                "        return `\n" +
+                "        <div class=\"border border-${accId}\" id=\"border-${accId}\">\n" +
+                "            <button class=\"btn btn-link collapsed\" data-xda data-toggle=\"collapse\" data-target=\"#col-${accId}\" aria-expanded=\"false\" aria-controls=\"col-${accId}\">\n" +
+                "                 ${item.keyword}: ${item.name}\n" +
+                "            </button>\n" +
+                "\n" +
+                "            <div id=\"col-${accId}\" class=\"collapse\" data-parent=\"gaccordion\" style=\"\">\n" +
+                "                <div class=\"p-4\">\n" +
+                "\n" +
+                "                    <h5>${k} : ${n}</h5>\n" +
+                "\n" +
+                "\n" +
+                "                   <p> ${item.keyword}: ${item.name}</p>\n" +
+                "                   ${item.steps.map((f,n) =>{\n" +
+                "                       if(f.result.status == \"passed\"){\n" +
+                "                           var m = \"text-success\";\n" +
+                "                           var c = \"glyph-icon simple-icon-check\";\n" +
+                "                           var err = \"<div></div>\"\n" +
+                "                       }else if(f.result.status == \"failed\"){\n" +
+                "                           var m = \"text-danger\";\n" +
+                "                           var c = \"glyph-icon simple-icon-close\"\n" +
+                "                           var err = \"<div class='err mt-3'>\"+ f.result.error_message +\"</div>\"\n" +
+                "\n" +
+                "                       }else if(f.result.status == \"skipped\"){\n" +
+                "                           var m = \"text-warning\";\n" +
+                "                           var c = \"glyph-icon simple-icon-exclamation\"\n" +
+                "                           var err = \"<div></div>\"\n" +
+                "                       }else{\n" +
+                "                           var m = \"text-dark\";\n" +
+                "                           var c = \"glyph-icon simple-icon-fire\"\n" +
+                "                           var err = \"<div></div>\"\n" +
+                "                       }\n" +
+                "                      return `<div class=\"row\" >\n" +
+                "                           <div class=\"col-md-2 mt-1\"><span class=\"${c} ${m}\"></span> ${f.keyword}</div>\n" +
+                "                           <div class=\"col-md-10 mt-1\">${f.name}</div>\n" +
+                "                           ${err}\n" +
+                "                       </div>`\n" +
+                "                   }).join(\"\")}\n" +
+                "\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>`\n" +
+                "    }\n" +
+                "    function accItem(item, k, n, parentID){\n" +
+                "        return `\n" +
+                "        <div class=\"border border-${accId}\" id=\"borde-${accId}\"\">\n" +
+                "            <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"#collapse-${accId}\" aria-expanded=\"false\" aria-controls=\"collapse-${accId}\">\n" +
+                "                 ${item.keyword}: ${item.name}\n" +
+                "            </button>\n" +
+                "\n" +
+                "            <div id=\"collapse-${accId}\" class=\"collapse\" data-parent=\"#accordion-${accId}\" style=\"\">\n" +
+                "                <div class=\"p-4\">\n" +
+                "\n" +
+                "                    <h5>${k} : ${n}</h5>\n" +
+                "\n" +
+                "\n" +
+                "                   <p> ${item.keyword}: ${item.name}</p>\n" +
+                "                   ${item.steps.map((f,n) =>{\n" +
+                "            if(f.result.status == \"passed\"){\n" +
+                "                var m = \"text-success\";\n" +
+                "                var c = \"glyph-icon simple-icon-check\";\n" +
+                "                var err = \"<div></div>\"\n" +
+                "            }else if(f.result.status == \"failed\"){\n" +
+                "                var m = \"text-danger\";\n" +
+                "                var c = \"glyph-icon simple-icon-close\"\n" +
+                "                var err = \"<div class='err mt-3'>\"+ f.result.error_message +\"</div>\"\n" +
+                "            }else if(f.result.status == \"skipped\"){\n" +
+                "                var m = \"text-warning\";\n" +
+                "                var c = \"glyph-icon simple-icon-exclamation\"\n" +
+                "                var err = \"<div></div>\"\n" +
+                "            }else{\n" +
+                "                var m = \"text-dark\";\n" +
+                "                var c = \"glyph-icon simple-icon-fire\"\n" +
+                "                var err = \"<div></div>\"\n" +
+                "            }\n" +
+                "\n" +
+                "            return `<div class=\"row\">\n" +
+                "                           <div class=\"col-md-2 mt-1\"><span class=\"${c} ${m}\"></span> ${f.keyword}</div>\n" +
+                "                           <div class=\"col-md-10 mt-1\">${f.name}</div>\n" +
+                "                           ${err}\n" +
+                "                       </div>`\n" +
+                "        }).join(\"\")}\n" +
+                "\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "\n" +
+                "\n" +
+                "`\n" +
+                "    }\n" +
+                "    function logs(item, parentID){\n" +
+                "        var bordertheme = null;\n" +
+                "        var lc = null;\n" +
+                "        let status = null\n" +
+                "        return `\n" +
+                "        ${item.steps.map((m,n) =>{\n" +
+                "\n" +
+                "            if(m.result.status == \"passed\"){\n" +
+                "               bordertheme = \"bt1\";\n" +
+                "               lc = \"lc1\";\n" +
+                "               status = m.result.status;\n" +
+                "            }else if(m.result.status == \"failed\"){\n" +
+                "               status = m.result.error_message\n" +
+                "               bordertheme = \"bt2\";\n" +
+                "                lc = \"lc2\";\n" +
+                "            }\n" +
+                "            else if(m.result.status == \"skipped\"){\n" +
+                "                bordertheme = \"bt3\";\n" +
+                "                lc = \"lc3\";\n" +
+                "                status = m.result.status;\n" +
+                "            }\n" +
+                "            else{\n" +
+                "                bordertheme = \"bt4\";\n" +
+                "                lc = \"lc4\";\n" +
+                "                status = m.result.status;\n" +
+                "            }\n" +
+                "\n" +
+                "            return `<tr>\n" +
+                "        <td>\n" +
+                "            <span class=\"${lc} align-middle\" ></span>\n" +
+                "        </td>\n" +
+                "        <td>\n" +
+                "            <span className=\"font-weight-medium\">${m.keyword}: ${m.name} </span>\n" +
+                "        </td>\n" +
+                "     </tr>`\n" +
+                "        }).join(\"\")}`}\n" +
+                "\n" +
+                "    function linechartCreate(x, y, z, m){\n" +
+                "        Chart.defaults.global.defaultFontFamily = \"'Nunito', sans-serif\";\n" +
+                "\n" +
+                "        Chart.defaults.LineWithShadow = Chart.defaults.line;\n" +
+                "        Chart.controllers.LineWithShadow = Chart.controllers.line.extend({\n" +
+                "            draw: function(ease) {\n" +
+                "                Chart.controllers.line.prototype.draw.call(this, ease);\n" +
+                "                var ctx = this.chart.ctx;\n" +
+                "                ctx.save();\n" +
+                "                ctx.shadowColor = \"rgba(0,0,0,0.15)\";\n" +
+                "                ctx.shadowBlur = 10;\n" +
+                "                ctx.shadowOffsetX = 0;\n" +
+                "                ctx.shadowOffsetY = 10;\n" +
+                "                ctx.responsive = true;\n" +
+                "                ctx.stroke();\n" +
+                "                Chart.controllers.line.prototype.draw.apply(this, arguments);\n" +
+                "                ctx.restore();\n" +
+                "            }\n" +
+                "        });\n" +
+                "\n" +
+                "        var chartTooltip = {\n" +
+                "            backgroundColor: \"#232223\",\n" +
+                "            titleFontColor: \"#969696\",\n" +
+                "            borderColor: \"#424242\",\n" +
+                "            borderWidth: 0.5,\n" +
+                "            bodyFontColor: \"#969696\",\n" +
+                "            bodySpacing: 10,\n" +
+                "            xPadding: 15,\n" +
+                "            yPadding: 15,\n" +
+                "            cornerRadius: 0.15,\n" +
+                "            displayColors: false\n" +
+                "        };\n" +
+                "\n" +
+                "            var salesChart = document.getElementById(\"salesChart1\").getContext(\"2d\");\n" +
+                "            var myChart = new Chart(salesChart, {\n" +
+                "                type: \"LineWithShadow\",\n" +
+                "                options: {\n" +
+                "                    plugins: {\n" +
+                "                        datalabels: {\n" +
+                "                            display: true\n" +
+                "                        }\n" +
+                "                    },\n" +
+                "                    responsive: true,\n" +
+                "                    maintainAspectRatio: false,\n" +
+                "                    scales: {\n" +
+                "                        yAxes: [\n" +
+                "                            {\n" +
+                "                                gridLines: {\n" +
+                "                                    display: true,\n" +
+                "                                    lineWidth: 1,\n" +
+                "                                    color: \"rgba(0,0,0,0.1)\",\n" +
+                "                                    drawBorder: false\n" +
+                "                                },\n" +
+                "                                ticks: {\n" +
+                "                                    beginAtZero: true,\n" +
+                "                                    stepSize: 5,\n" +
+                "                                    min: z,\n" +
+                "                                    max: y,\n" +
+                "                                    padding:10\n" +
+                "                                }\n" +
+                "                            }\n" +
+                "                        ],\n" +
+                "                        xAxes: [\n" +
+                "                            {\n" +
+                "                                gridLines: {\n" +
+                "                                    display: false\n" +
+                "                                }\n" +
+                "                            }\n" +
+                "                        ]\n" +
+                "                    },\n" +
+                "                    legend: {\n" +
+                "                        display: false\n" +
+                "                    },\n" +
+                "                    tooltips: chartTooltip\n" +
+                "                },\n" +
+                "                data: {\n" +
+                "                    labels: x,\n" +
+                "                    datasets: [\n" +
+                "                        {\n" +
+                "                            label: \"\",\n" +
+                "                            data: m,\n" +
+                "                            borderColor: \"#a53949\",\n" +
+                "                            pointBackgroundColor: \"#f8f8f8\",\n" +
+                "                            pointBorderColor: \"#a53949\",\n" +
+                "                            pointHoverBackgroundColor: \"rgba(165, 57, 73, 0.1)\",\n" +
+                "                            pointHoverBorderColor: \"rgba(220,29,67,0.7)\",\n" +
+                "                            pointRadius: 6,\n" +
+                "                            pointBorderWidth: 2,\n" +
+                "                            pointHoverRadius: 8,\n" +
+                "                            fill: false\n" +
+                "                        }\n" +
+                "                    ]\n" +
+                "                }\n" +
+                "            });\n" +
+                "\n" +
+                "    }\n" +
+                "\n" +
+                "    tdurationx = document.querySelector('.tduration p');\n" +
+                "    tdurationx.innerHTML = 'Duration: ' + secondsToHms(convertDurationToSeconds(totaldr));\n" +
+                "\n" +
+                "    tdurationx = document.querySelector('.tpercent p');\n" +
+                "    let gtotappass = (passedtotal * 100) / stepstotal;\n" +
+                "    tdurationx.innerHTML = `Success rate: ${gtotappass.toFixed(2)} % Passed`;\n" +
+                "\n" +
+                "    tdurationx = document.querySelector('.tdate p');\n" +
+                "    tdurationx.innerHTML = 'Execution Time: ' + moment(test[0].elements[0].start_timestamp).fromNow();\n" +
+                "\n" +
+                "    $(document).ready(function(){\n" +
+                "        $('[data-toggle=\"popover\"]').popover({\n" +
+                "            sanitize: true\n" +
+                "        });\n" +
+                "\n" +
+                "    });\n" +
+                "    console.log(keys)\n" +
+                "</script>");
+
+
+        out.close();
+        File file = new File("target/report/report.html");
+        boolean result = Files.deleteIfExists(file.toPath());
+        FileUtils.copyFile(new File("target/report/" + dateFormat.format(date) + ".html"), new File("target/report/report.html"));
+    }
+}
